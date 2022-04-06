@@ -14,7 +14,8 @@ import WithAdminAuth from './hoc/withAdminAuth';
 // layouts
 import MainLayout from './layouts/MainLayout';
 import HomepageLayout from './layouts/HomepageLayout';
-
+import DashboardLayout from './layouts/DashboardLayout';
+import AdminLayout from './layouts/AdminLayout';
 // pages
 import Homepage from './pages/Homepage';
 import Registration from './pages/Registration';
@@ -35,7 +36,6 @@ const App = () => {
   return (
     <div className='App'>
       <AdminToolbar />
-
       <Routes>
         <Route
           exact
@@ -70,24 +70,25 @@ const App = () => {
             </MainLayout>
           }
         />
-        <Route
-          path='/admin'
-          element={
-            <WithAdminAuth>
-              <MainLayout>
-                <Admin />
-              </MainLayout>
-            </WithAdminAuth>
-          }
-        />
+
         <Route
           path='/dashboard'
           element={
             <WithAuth>
-              <MainLayout>
+              <DashboardLayout>
                 <Dashboard />
-              </MainLayout>
+              </DashboardLayout>
             </WithAuth>
+          }
+        />
+        <Route
+          path='/admin'
+          element={
+            <WithAdminAuth>
+              <AdminLayout>
+                <Admin />
+              </AdminLayout>
+            </WithAdminAuth>
           }
         />
       </Routes>
