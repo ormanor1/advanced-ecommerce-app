@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-import { resetPassword, resetAllAuthForms } from '../../redux/User/user.actions';
+import { resetPasswordStart } from '../../redux/User/user.actions';
 
 import './styles.scss';
 
@@ -12,32 +12,31 @@ import Button from './../forms/Button';
 
 const mapState = ({ user }) => ({
   resetPasswordSuccess: user.resetPasswordSuccess,
-  resetPasswordError: user.resetPasswordError,
+  userError: user.userError,
 });
 
 const EmailPassword = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { resetPasswordError, resetPasswordSuccess } = useSelector(mapState);
+  const { userError, resetPasswordSuccess } = useSelector(mapState);
   const [email, setEmail] = useState('');
   const [errors, setErrors] = useState([]);
 
   useEffect(() => {
     if (resetPasswordSuccess) {
-      dispatch(resetAllAuthForms());
       navigate('/login');
     }
   }, [resetPasswordSuccess]);
 
   useEffect(() => {
-    if (Array.isArray(resetPasswordError) && resetPasswordError.length > 0) {
-      setErrors(resetPasswordError);
+    if (Array.isArray(userError) && userError.length > 0) {
+      setErrors(userError);
     }
-  }, [resetPasswordError]);
+  }, [userError]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(resetPassword({ email }));
+    dispatch(resetPasswordStart({ email }));
   };
 
   const configAuthWrapper = {
