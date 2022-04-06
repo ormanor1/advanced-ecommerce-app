@@ -1,14 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './styles.scss';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { auth, handleUserProfile } from './../../firebase/utils';
+import { signUpUser, resetAllAuthForms } from '../../redux/User/user.actions';
+
+import './styles.scss';
 
 import AuthWrapper from './../AuthWrapper';
 import FormInput from './../forms/FormInput';
 import Button from './../forms/Button';
 
+const mapState = ({ user }) => ({
+  signUpSuccess: user.signUpSuccess,
+  signUpError: user.signUpError,
+});
+
 const Signup = (props) => {
+  const { signUpSuccess, signUpError } = useSelector(mapState);
+  const dispatch = useDispatch();
+
   const [displayName, setDisplayName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -16,6 +26,20 @@ const Signup = (props) => {
   const [errors, setErrors] = useState([]);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (signUpSuccess) {
+      reset();
+      dispatch(resetAllAuthForms());
+      navigate('/');
+    }
+  }, [signUpSuccess]);
+
+  useEffect(() => {
+    if (Array.isArray(signUpError) && signUpError.length > 0) {
+      setErrors(signUpError);
+    }
+  }, [signUpError]);
 
   const reset = () => {
     setDisplayName('');
@@ -25,27 +49,9 @@ const Signup = (props) => {
     setErrors([]);
   };
 
-  const handleFormSubmit = async (event) => {
-    event.preventDefault();
-
-    if (password !== confirmPassword) {
-      const err = ["Password Don't match"];
-      setErrors(err);
-      return;
-    }
-
-    try {
-      const { user } = await auth.createUserWithEmailAndPassword(
-        email,
-        password
-      );
-
-      await handleUserProfile(user, { displayName });
-      reset();
-      navigate('/');
-    } catch (err) {
-      // console.log(err);
-    }
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+    dispatch(signUpUser({ displayName, email, password, confirmPassword }));
   };
 
   const configAuthWrapper = {
