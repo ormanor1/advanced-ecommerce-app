@@ -18,6 +18,7 @@ import DashboardLayout from './layouts/DashboardLayout';
 import AdminLayout from './layouts/AdminLayout';
 // pages
 import Homepage from './pages/Homepage';
+import Search from './pages/Search';
 import Registration from './pages/Registration';
 import Login from './pages/Login';
 import Recovery from './pages/Recovery';
@@ -70,7 +71,23 @@ const App = () => {
             </MainLayout>
           }
         />
-
+        <Route
+          exact
+          path='/search'
+          element={
+            <MainLayout>
+              <Search />
+            </MainLayout>
+          }
+        />
+        <Route
+          path='/search/:filterType'
+          element={
+            <MainLayout>
+              <Search />
+            </MainLayout>
+          }
+        />
         <Route
           path='/dashboard'
           element={

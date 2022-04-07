@@ -28,7 +28,16 @@ const Header = (props) => {
             <img src={Logo} alt='SimpleTut LOGO' />
           </Link>
         </div>
-
+        <nav>
+          <ul>
+            <li>
+              <Link to='/'>home</Link>
+            </li>
+            <li>
+              <Link to='/search'>search</Link>
+            </li>
+          </ul>
+        </nav>
         <div className='callToActions'>
           {currentUser && (
             <ul>
