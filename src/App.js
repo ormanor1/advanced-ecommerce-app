@@ -24,6 +24,8 @@ import Login from './pages/Login';
 import Recovery from './pages/Recovery';
 import Dashboard from './pages/Dashboard';
 import Admin from './pages/Admin';
+import ProductDetails from './pages/ProductDetails';
+import Cart from './pages/Cart';
 
 import './default.scss';
 
@@ -85,6 +87,22 @@ const App = () => {
           element={
             <MainLayout>
               <Search />
+            </MainLayout>
+          }
+        />
+        <Route
+          path='/product/:productID'
+          element={
+            <MainLayout>
+              <ProductDetails />
+            </MainLayout>
+          }
+        />{' '}
+        <Route
+          path='/cart'
+          element={
+            <MainLayout>
+              <Cart />
             </MainLayout>
           }
         />

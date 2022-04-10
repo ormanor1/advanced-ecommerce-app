@@ -5,12 +5,13 @@ import {
   handleAddProduct,
   handleFetchProducts,
   handleDeleteProduct,
+  handleFetchProduct,
 } from './products.helpers';
 
 import {
   setProducts,
+  setProduct,
   fetchProductsStart,
-  deleteProductStart,
 } from './products.actions';
 
 export function* addProduct({
@@ -38,9 +39,9 @@ export function* addProduct({
 export function* onAddProductStart() {
   yield takeLatest(productTypes.ADD_NEW_PRODUCT_START, addProduct);
 }
-export function* fetchProducts({ payload: { filterType } }) {
+export function* fetchProducts({ payload }) {
   try {
-    const products = yield handleFetchProducts(filterType);
+    const products = yield handleFetchProducts(payload);
     yield put(setProducts(products));
   } catch (error) {
     // console.log(error);
@@ -64,10 +65,26 @@ export function* onDeleteProduct() {
   yield takeLatest(productTypes.DELETE_PRODUCT_START, deleteProduct);
 }
 
+export function* fetchProduct({ payload }) {
+  try {
+    const product = yield handleFetchProduct(payload);
+    console.log(product);
+
+    yield put(setProduct(product));
+  } catch (error) {
+    // console.log(error);
+  }
+}
+
+export function* onFetchProductStart() {
+  yield takeLatest(productTypes.FETCH_PRODUCT_START, fetchProduct);
+}
+
 export default function* productsSagas() {
   yield all([
     call(onAddProductStart),
     call(onFetchProductsStart),
     call(onDeleteProduct),
+    call(onFetchProductStart),
   ]);
 }
